@@ -6,7 +6,7 @@ Fork terminal sessions to launch Claude Code CLI with conversation context.
 
 ## Prerequisites
 
-- Claude Code CLI installed
+- Claude Code CLI installed (`npm install -g @anthropic-ai/claude-code`)
 - ANTHROPIC_API_KEY environment variable set
 - Active internet connection
 
@@ -20,32 +20,66 @@ Fork terminal sessions to launch Claude Code CLI with conversation context.
 
 ## Pattern
 
-1. **Check Claude Code help** (if not already known)
-2. **Determine model tier** from user request (fast/base/heavy)
-3. **Prepare fork summary** (if "summarize" keyword present)
-4. **Execute fork** with Claude Code command
+1. **Determine model tier** from user request (fast/base/heavy)
+2. **Prepare initial prompt** (if specific task mentioned)
+3. **Execute fork** with Claude Code command
+
+## Command Reference
+
+```bash
+# Interactive mode (default)
+claude
+
+# With specific model
+claude --model haiku
+claude --model sonnet
+claude --model opus
+
+# Single prompt mode (non-interactive)
+claude -p "Your question or task here"
+claude --print "Explain this code"
+
+# Resume previous session
+claude -r
+claude --resume
+
+# Skip permission prompts (use with caution)
+claude -d
+claude --dangerously-skip-permissions
+
+# Combine flags
+claude --model haiku -p "Quick question"
+claude --model opus -d  # Opus with auto-approve
+```
 
 ## Steps
 
-### Without Summary
+### Basic Fork (Interactive Mode)
 ```bash
-# Fast model
+# Fast model - quick tasks
 python tools/fork_terminal.py "claude --model haiku"
 
-# Base model (default)
+# Base model (default) - standard development
 python tools/fork_terminal.py "claude"
 
-# Heavy model
+# Heavy model - complex analysis
 python tools/fork_terminal.py "claude --model opus"
 ```
 
-### With Summary
+### Fork with Initial Prompt
 ```bash
-# 1. Generate summary using fork-summary-user-prompt.md template
-# 2. Save summary to temp file or pass inline
-# 3. Fork with summary as initial context
+# Pass a starting prompt to the new session
+python tools/fork_terminal.py "claude -p 'Analyze the test coverage in this project'"
 
-python tools/fork_terminal.py "claude --model sonnet --context-file summary.md"
+# For multi-word prompts, use proper quoting
+python tools/fork_terminal.py "claude --model sonnet -p 'Refactor the authentication module'"
+```
+
+### Fork with YOLO Mode (Auto-approve)
+```bash
+# Use -d flag to skip permission prompts
+# WARNING: Only use for trusted operations
+python tools/fork_terminal.py "claude --model haiku -d"
 ```
 
 ## Example Invocations
@@ -54,50 +88,33 @@ python tools/fork_terminal.py "claude --model sonnet --context-file summary.md"
 ```
 User: fork session claude code fast - fix these linting errors
 → Opens Claude Haiku in new terminal for quick fixes
+
+Command: python tools/fork_terminal.py "claude --model haiku"
 ```
 
 ### Standard Development (Base Model)
 ```
 User: fork terminal use claude code to implement user authentication
 → Opens Claude Sonnet in new terminal
+
+Command: python tools/fork_terminal.py "claude"
 ```
 
 ### Complex Refactor (Heavy Model)
 ```
-User: fork session claude opus summarize work done - refactor entire backend architecture
-→ Opens Claude Opus with conversation summary
-```
+User: fork session claude opus - refactor entire backend architecture
+→ Opens Claude Opus for complex analysis
 
-## Command Options
-
-```bash
-# Interactive mode
-claude --model haiku
-
-# Single prompt mode
-claude prompt "Your question here" --model sonnet
-
-# File-specific operation
-claude edit app.py "Add error handling" --model haiku
-
-# Code generation
-claude generate "Create REST API endpoints" --model sonnet
-
-# Code review
-claude review src/ --model opus
-
-# YOLO mode (skip confirmations)
-claude --danger --model haiku
+Command: python tools/fork_terminal.py "claude --model opus"
 ```
 
 ## Best Practices
 
-- Use Haiku for quick fixes, simple refactors, and fast iterations
-- Use Sonnet for standard development tasks (features, bug fixes, tests)
-- Use Opus for complex analysis, architecture decisions, and critical code
-- Always provide specific file paths or clear scope
-- Use --context-file to pass conversation summaries
-- Consider --danger flag only for trusted, non-critical operations
+- **Use Haiku** for quick fixes, simple refactors, and fast iterations
+- **Use Sonnet** for standard development tasks (features, bug fixes, tests)
+- **Use Opus** for complex analysis, architecture decisions, and critical code
+- **Avoid -d flag** unless you fully trust the operation
+- **Provide clear context** in your initial prompt when forking
 
 ## API Key Management
 
@@ -117,6 +134,7 @@ export ANTHROPIC_API_KEY="your-api-key-here"
 # Main session: work on feature A
 # Forked session: work on feature B
 fork session claude haiku - implement password reset feature
+→ python tools/fork_terminal.py "claude --model haiku"
 ```
 
 ### 2. Test-Driven Development
@@ -124,50 +142,89 @@ fork session claude haiku - implement password reset feature
 # Main session: write tests
 # Forked session: implement code to pass tests
 fork terminal claude sonnet - implement code for these test cases
+→ python tools/fork_terminal.py "claude"
 ```
 
-### 3. Documentation
+### 3. Quick Documentation
 ```
-# Generate docs in parallel
-fork session claude haiku - update README with new API endpoints
+# Generate docs in parallel with fast model
+fork session claude haiku - update README
+→ python tools/fork_terminal.py "claude --model haiku"
 ```
 
 ### 4. Code Review
 ```
-# Fork a session for detailed review
-fork terminal claude opus summarize work - review security implications of authentication changes
+# Fork a session for detailed review with heavy model
+fork terminal claude opus - review security implications
+→ python tools/fork_terminal.py "claude --model opus"
 ```
 
 ### 5. Multi-File Refactoring
 ```
 # Offload large refactoring task
 fork session claude opus - refactor database layer to use repository pattern
+→ python tools/fork_terminal.py "claude --model opus"
 ```
 
 ## Working Directory Context
 
-Claude Code automatically uses the current working directory, so forked sessions will have the same codebase context:
+Forked sessions automatically inherit the current working directory:
 
 ```bash
 # Current directory is preserved
 cd /path/to/project
 fork terminal claude haiku - fix type errors in src/
-# New terminal opens in /path/to/project
+# New terminal opens in /path/to/project with full codebase access
 ```
 
-## Integration with Other Tools
+## Integration Examples
 
-### With Git
+### With Git Workflow
 ```bash
-fork terminal claude sonnet - review git diff and suggest improvements
+# Review staged changes
+fork terminal claude sonnet
+# Then in the forked session: "Review git diff and suggest improvements"
 ```
 
-### With pytest
+### With Testing
 ```bash
-fork session claude haiku - run pytest and fix failing tests
+# Run and fix tests
+fork session claude haiku
+# Then: "Run pytest and fix any failing tests"
 ```
 
-### With linters
+### With Linting
 ```bash
-fork terminal claude haiku - fix all ruff linting errors
+# Fix linting issues quickly
+fork terminal claude haiku
+# Then: "Fix all ruff linting errors"
+```
+
+## Troubleshooting
+
+### Claude Code not found
+```bash
+# Check if claude is installed
+which claude
+
+# Install if missing
+npm install -g @anthropic-ai/claude-code
+```
+
+### API key not set
+```bash
+# Verify API key is available
+echo $ANTHROPIC_API_KEY
+
+# Set for current session
+export ANTHROPIC_API_KEY="sk-ant-..."
+
+# Or add to ~/.bashrc or ~/.zshrc for persistence
+```
+
+### Permission denied
+```bash
+# If you get permission errors, check file permissions
+# or use -d flag for auto-approve (with caution)
+claude -d
 ```

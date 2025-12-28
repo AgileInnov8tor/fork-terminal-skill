@@ -1,22 +1,18 @@
 ---
 title: Forked Session Context
 type: conversation-summary
-version: 1.0.0
+version: 1.1.0
 ---
 
 # Forked Session Context
 
 You are continuing work from a previous conversation session. Below is the summarized context from that session.
 
-## Conversation History
-
-{{conversation_history}}
-
 ## Summary of User's Request
 
 {{summarized_user_prompt}}
 
-## Summary of Assistant's Response
+## Summary of Work Done
 
 {{response_summary}}
 
@@ -26,23 +22,11 @@ You are continuing work from a previous conversation session. Below is the summa
 
 ## Relevant Files
 
-{{#if relevant_files}}
-{{#each relevant_files}}
-- {{this}}
-{{/each}}
-{{else}}
-_No specific files mentioned_
-{{/if}}
+{{relevant_files}}
 
 ## Key Decisions Made
 
-{{#if key_decisions}}
-{{#each key_decisions}}
-- {{this}}
-{{/each}}
-{{else}}
-_No key decisions documented_
-{{/if}}
+{{key_decisions}}
 
 ## Next Steps
 
@@ -50,4 +34,4 @@ _No key decisions documented_
 
 ---
 
-**Instructions**: Continue the work described above. You have full context from the previous session and should pick up where it left off.
+**Instructions**: Continue the work described above. You have full context from the previous session and should pick up where it left off. Feel free to ask clarifying questions if anything is unclear.

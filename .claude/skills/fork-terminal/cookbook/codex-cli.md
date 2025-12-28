@@ -1,14 +1,18 @@
 # Codex CLI Integration
 
+> **⚠️ Community Documentation**: This guide describes a hypothetical Codex CLI tool. The actual tool may have different commands, flags, or may not exist in this form. Always verify with `codex --help` or official documentation before use.
+
 ## Overview
 
 Fork terminal sessions to launch Codex CLI (or similar AI coding assistant) with conversation context.
 
 ## Prerequisites
 
-- Codex CLI installed
+- Codex CLI installed (verify availability and installation method)
 - CODEX_API_KEY or appropriate credentials configured
 - Active internet connection
+
+> **Note**: This documentation is speculative. Verify the actual CLI interface and authentication requirements before use.
 
 ## Model Selection
 

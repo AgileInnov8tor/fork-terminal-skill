@@ -1,5 +1,7 @@
 # Gemini CLI Integration
 
+> **⚠️ Community Documentation**: This guide is based on publicly available information about Gemini CLI. Command syntax and features may have changed. Always verify with `gemini --help` before use.
+
 ## Overview
 
 Fork terminal sessions to launch Google Gemini CLI with conversation context.
@@ -7,9 +9,11 @@ Uses Google account authentication (subscription-based), not API keys.
 
 ## Prerequisites
 
-- Gemini CLI installed: `npm install -g @anthropic-ai/gemini-cli` or via official installer
+- Gemini CLI installed (check Google's official documentation for installation)
 - Logged in via `gemini` (will prompt for Google account auth on first run)
 - Active internet connection
+
+> **Note**: Verify installation and authentication requirements with the official Gemini CLI documentation, as these may change.
 
 ## Authentication
 
