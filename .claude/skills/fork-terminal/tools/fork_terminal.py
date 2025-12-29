@@ -35,6 +35,16 @@ def get_preferred_terminal() -> str:
     return "terminal"
 
 
+def expand_aliases(command: str) -> str:
+    """Expand shell aliases in the command."""
+    # Expand 'claude' alias to full path
+    if command.startswith("claude ") or command == "claude":
+        home = os.path.expanduser("~")
+        claude_path = f"{home}/.claude/local/claude --plugin-dir {home}/.claude/plugins/claude-code-toolkit"
+        command = command.replace("claude", claude_path, 1)
+    return command
+
+
 def fork_terminal(command: str, terminal: str = None) -> None:
     """
     Fork a new terminal window and execute the given command.
