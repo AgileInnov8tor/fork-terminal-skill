@@ -169,6 +169,7 @@ def main():
         sys.exit(1)
 
     command = " ".join(args)
+    command = expand_aliases(command)
 
     try:
         used_terminal = terminal or get_preferred_terminal()

@@ -64,3 +64,4 @@ Desktop.ini
 .coverage
 htmlcov/
 .tox/
+documents.db
