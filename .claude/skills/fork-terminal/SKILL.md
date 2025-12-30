@@ -108,6 +108,16 @@ The skill uses progressive disclosure to load only relevant documentation:
 - `@cookbook/codex-cli.md` - Codex CLI integration
 - `@cookbook/claude-code.md` - Claude Code integration
 
+## Shell Alias Expansion
+
+The fork_terminal.py script automatically expands common shell aliases:
+
+- **`claude` command**: Expands to full path with plugin directory
+  - From: `claude --model haiku`
+  - To: `~/.claude/local/claude --plugin-dir ~/.claude/plugins/claude-code-toolkit --model haiku`
+
+This ensures commands work correctly in forked terminal sessions where shell aliases may not be loaded.
+
 ## Safety
 
 - Always run `--help` command first to understand tool usage
